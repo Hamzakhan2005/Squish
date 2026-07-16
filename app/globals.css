@@ -1,0 +1,74 @@
+@import "tailwindcss";
+
+:root {
+  --ink: #0d0d0d;
+  --ink-raised: #161616;
+  --ink-line: #272727;
+  --paper: #f2efe9;
+  --paper-dim: #8a8781;
+  --squish: #e72a00;
+  --squish-dim: #5c1600;
+}
+
+@theme inline {
+  --color-ink: var(--ink);
+  --color-ink-raised: var(--ink-raised);
+  --color-ink-line: var(--ink-line);
+  --color-paper: var(--paper);
+  --color-paper-dim: var(--paper-dim);
+  --color-squish: var(--squish);
+  --color-squish-dim: var(--squish-dim);
+  --font-display: "Squish Display", "Arial Narrow", Arial, sans-serif;
+  --font-body: "Squish Body", Helvetica, Arial, sans-serif;
+  --font-mono: "Squish Mono", "Courier New", monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--ink);
+}
+
+body {
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--squish);
+  color: var(--paper);
+}
+
+/* Condensed, heavy display type in the absence of a hosted webfont --
+   swap for a real condensed grotesk (e.g. Archivo Black / Bebas Neue) via
+   next/font once the project has network access to fetch it. */
+.font-display {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-stretch: condensed;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+}
+
+.font-mono-label {
+  font-family: var(--font-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.hairline {
+  border-color: var(--ink-line);
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
