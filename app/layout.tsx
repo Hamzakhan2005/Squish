@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { fontVariables, anton } from "@/lib/fonts";
+import Loader from "@/components/Loader";
 
 export const metadata: Metadata = {
   title: "Squish — convert, compress, done",
@@ -12,7 +14,10 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body className={`${fontVariables} ${anton.variable}`}>
+        <Loader />
+        {children}
+      </body>
     </html>
   );
 }

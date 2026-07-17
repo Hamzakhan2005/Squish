@@ -18,7 +18,7 @@
   --color-paper-dim: var(--paper-dim);
   --color-squish: var(--squish);
   --color-squish-dim: var(--squish-dim);
-  --font-display: "Squish Display", "Arial Narrow", Arial, sans-serif;
+  --font-display: var(--font-anton), "Arial Narrow", Arial, sans-serif;
   --font-body: "Squish Body", Helvetica, Arial, sans-serif;
   --font-mono: "Squish Mono", "Courier New", monospace;
 }
