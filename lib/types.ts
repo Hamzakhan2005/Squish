@@ -18,6 +18,10 @@ export interface ToolMeta {
   multiFile: boolean; // can the user drop more than one file?
   mergesFiles: boolean; // does the tool combine files into ONE output (merge-pdf)?
   hasQuality: boolean; // show the quality slider?
+  cardFont: string; // CSS var, e.g. "var(--font-bebas)" — this card's own typeface
+  cardFontLabel: string; // human name shown in the cursor tag, e.g. "Bebas Neue"
+  hoverBg: string; // hex — card background on hover
+  hoverText: string; // hex — card text color on hover
 }
 
 // Every file the user drops goes through this lifecycle.
