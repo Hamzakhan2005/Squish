@@ -14,17 +14,27 @@ export default function ToolPageShell({
     <main className="min-h-screen">
       <Header />
 
-      <section className="pt-28 sm:pt-36 px-5 sm:px-8 pb-10 border-b hairline">
+      <section
+        className="pt-28 sm:pt-36 px-5 sm:px-8 pb-10 border-b transition-colors"
+        style={{ background: tool.hoverBg, borderColor: `${tool.hoverText}22` }}
+      >
         <Link
           href="/"
-          className="font-mono-label text-xs text-paper-dim hover:text-paper"
+          className="font-mono-label text-xs hover:opacity-100 transition-opacity"
+          style={{ color: tool.hoverText, opacity: 0.6 }}
         >
           ← All tools
         </Link>
-        <h1 className="font-display leading-[0.9] text-[14vw] sm:text-6xl md:text-7xl mt-4">
+        <h1
+          className="leading-[0.9] text-[14vw] sm:text-6xl md:text-7xl mt-4"
+          style={{ color: tool.hoverText, fontFamily: tool.cardFont }}
+        >
           {tool.name}
         </h1>
-        <p className="mt-4 max-w-md text-paper-dim text-sm sm:text-base">
+        <p
+          className="mt-4 max-w-md text-sm sm:text-base"
+          style={{ color: tool.hoverText, opacity: 0.75 }}
+        >
           {tool.tagline}
         </p>
       </section>
