@@ -12,12 +12,20 @@ import { compressPdf } from "@/lib/engines/pdfOps";
 
 const tool = getTool("compress-pdf")!;
 
+const presets: { label: string; value: number }[] = [
+  { label: "Extreme", value: 0.15 },
+  { label: "Recommended", value: 0.5 },
+  { label: "High quality", value: 0.85 },
+];
+
 export default function CompressPdfPage() {
-  const [quality, setQuality] = useState(0.6);
+  const [quality, setQuality] = useState(0.5);
 
   const processor = useCallback(
     (file: File, onProgress: (pct: number) => void) =>
-      compressPdf(file, quality, (done, total) => onProgress((done / total) * 100)),
+      compressPdf(file, quality, (done, total) =>
+        onProgress((done / total) * 100)
+      ),
     [quality]
   );
 
@@ -26,15 +34,32 @@ export default function CompressPdfPage() {
 
   return (
     <ToolPageShell tool={tool}>
-      <FileDropzone accept={tool.accepts} multiple={false} onFiles={addFiles} label="one PDF at a time" />
+      <FileDropzone
+        accept={tool.accepts}
+        multiple={false}
+        onFiles={addFiles}
+        label="one PDF at a time"
+      />
 
-      <div className="mt-6">
+      <div className="mt-6 flex gap-2">
+        {presets.map((p) => (
+          <button
+            key={p.label}
+            onClick={() => setQuality(p.value)}
+            className={`px-4 py-2 rounded-full font-mono-label text-xs border hairline transition-colors ${
+              Math.abs(quality - p.value) < 0.02
+                ? "bg-squish text-paper border-squish"
+                : "text-paper-dim hover:text-paper"
+            }`}
+          >
+            {p.label}
+          </button>
+        ))}
+      </div>
+
+      <div className="mt-4">
         <QualitySlider value={quality} onChange={setQuality} />
       </div>
-      <p className="mt-2 max-w-sm text-xs text-paper-dim">
-        Works best on image-heavy PDFs (scans, exports). Text-only PDFs are
-        already small and may not shrink much further.
-      </p>
 
       {items.length > 0 && (
         <div className="mt-5">
