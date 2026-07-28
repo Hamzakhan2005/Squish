@@ -1,5 +1,6 @@
 import Header from "./Header";
 import MetaList from "./MetaList";
+import ToolNotes from "./ToolNotes";
 import Link from "next/link";
 import type { ToolMeta } from "@/lib/types";
 
@@ -40,7 +41,10 @@ export default function ToolPageShell({
       </section>
 
       <section className="px-5 sm:px-8 py-10 grid grid-cols-1 lg:grid-cols-[1fr_260px] gap-10">
-        <div>{children}</div>
+        <div>
+          <ToolNotes notes={tool.notes} />
+          {children}
+        </div>
         <div className="lg:pt-2">
           <MetaList
             rows={[
