@@ -18,7 +18,11 @@ function toCanvas(img: HTMLImageElement, w = img.width, h = img.height) {
   return canvas;
 }
 
-function toBlob(canvas: HTMLCanvasElement, type: string, quality?: number): Promise<Blob> {
+function toBlob(
+  canvas: HTMLCanvasElement,
+  type: string,
+  quality?: number
+): Promise<Blob> {
   return new Promise((resolve, reject) => {
     canvas.toBlob(
       (b) => (b ? resolve(b) : reject(new Error("toBlob failed"))),
@@ -39,11 +43,34 @@ export async function compressImage(
   // PNG has no lossy quality knob in the Canvas API, so we compress PNGs
   // by re-encoding as JPEG-quality WEBP instead, which keeps things small
   // while staying a widely supported format.
-  const type = file.type === "image/png" ? "image/webp" : file.type || "image/jpeg";
+  const type =
+    file.type === "image/png" ? "image/webp" : file.type || "image/jpeg";
   const blob = await toBlob(canvas, type, quality);
   const ext = type.split("/")[1];
   const name = file.name.replace(/\.[^.]+$/, `.${ext}`);
   return { blob, name };
+}
+
+/**
+ * Strip EXIF metadata (GPS location, camera model, timestamps, etc.) by
+ * re-drawing the image onto a canvas and re-encoding it — the canvas
+ * pipeline never carries EXIF through, so this is a clean, honest wipe.
+ * Side effect: any embedded color profile is dropped too, which can very
+ * slightly shift color on color-managed images.
+ */
+export async function stripImageMetadata(
+  file: File
+): Promise<{ blob: Blob; name: string }> {
+  const img = await loadImage(file);
+  const canvas = toCanvas(img);
+  URL.revokeObjectURL(img.src);
+  const type = file.type === "image/png" ? "image/png" : "image/jpeg";
+  const blob = await toBlob(
+    canvas,
+    type,
+    type === "image/jpeg" ? 0.95 : undefined
+  );
+  return { blob, name: file.name };
 }
 
 export type ImageFormat = "image/jpeg" | "image/png" | "image/webp";
@@ -55,7 +82,11 @@ export async function convertImageFormat(
   const img = await loadImage(file);
   const canvas = toCanvas(img);
   URL.revokeObjectURL(img.src);
-  const blob = await toBlob(canvas, target, target === "image/png" ? undefined : 0.92);
+  const blob = await toBlob(
+    canvas,
+    target,
+    target === "image/png" ? undefined : 0.92
+  );
   const ext = target.split("/")[1];
   const name = file.name.replace(/\.[^.]+$/, `.${ext}`);
   return { blob, name };
