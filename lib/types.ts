@@ -22,6 +22,7 @@ export interface ToolMeta {
   cardFontLabel: string; // human name shown in the cursor tag, e.g. "Bebas Neue"
   hoverBg: string; // hex — card background on hover
   hoverText: string; // hex — card text color on hover
+  notes?: string[]; // plain-language "what this can/can't handle" bullets shown on the tool page
 }
 
 // Every file the user drops goes through this lifecycle.
