@@ -44,6 +44,14 @@ export async function renderPdfPages(
   return canvases;
 }
 
+/** Page count only — doesn't render anything, so it's cheap even on big PDFs. */
+export async function getPdfPageCount(file: File): Promise<number> {
+  const pdfjs = await getPdfjs();
+  const buffer = await file.arrayBuffer();
+  const doc = await pdfjs.getDocument({ data: buffer }).promise;
+  return doc.numPages;
+}
+
 export function canvasToBlob(
   canvas: HTMLCanvasElement,
   type: string,
