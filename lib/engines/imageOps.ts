@@ -8,7 +8,17 @@ function loadImage(file: File): Promise<HTMLImageElement> {
     img.src = URL.createObjectURL(file);
   });
 }
-
+export function loadImageDimensions(file: File): Promise<{ width: number; height: number }> {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => {
+      resolve({ width: img.naturalWidth, height: img.naturalHeight });
+      URL.revokeObjectURL(img.src);
+    };
+    img.onerror = reject;
+    img.src = URL.createObjectURL(file);
+  });
+}
 function toCanvas(img: HTMLImageElement, w = img.width, h = img.height) {
   const canvas = document.createElement("canvas");
   canvas.width = w;

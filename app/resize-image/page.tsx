@@ -11,6 +11,11 @@ import { resizeImage } from "@/lib/engines/imageOps";
 
 const tool = getTool("resize-image")!;
 
+const presets: { label: string; width: number; height: number }[] = [
+  { label: "US / India Passport (2×2in, 600×600px)", width: 600, height: 600 },
+  { label: "UK / EU Passport (35×45mm, 413×531px)", width: 413, height: 531 },
+];
+
 export default function ResizeImagePage() {
   const [width, setWidth] = useState(1024);
   const [height, setHeight] = useState(768);
@@ -31,6 +36,28 @@ export default function ResizeImagePage() {
   return (
     <ToolPageShell tool={tool}>
       <FileDropzone accept={tool.accepts} multiple onFiles={addFiles} label="applies the same size to every file" />
+
+      <div className="mt-6">
+        <span className="font-mono-label text-xs text-paper-dim">Presets</span>
+        <div className="flex flex-wrap gap-2 mt-2">
+          {presets.map((p) => (
+            <button
+              key={p.label}
+              onClick={() => {
+                setWidth(p.width);
+                setHeight(p.height);
+              }}
+              className={`px-4 py-2 rounded-full font-mono-label text-xs border hairline transition-colors ${
+                width === p.width && height === p.height
+                  ? "bg-squish text-paper border-squish"
+                  : "text-paper-dim hover:text-paper"
+              }`}
+            >
+              {p.label}
+            </button>
+          ))}
+        </div>
+      </div>
 
       <div className="mt-6 flex items-end gap-4">
         <label className="block">
